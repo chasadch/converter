@@ -31,7 +31,14 @@ async def convert_media(file: UploadFile = File(...), target_format: str = Form(
         stream = ffmpeg.output(stream, output_path)
         ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
         
-        return FileResponse(output_path, filename=output_filename)
+        # Determine MIME type
+        mime_types = {
+            "mp4": "video/mp4", "avi": "video/x-msvideo", "mov": "video/quicktime", "mkv": "video/x-matroska",
+            "mp3": "audio/mpeg", "wav": "audio/wav", "flac": "audio/flac", "ogg": "audio/ogg", "aac": "audio/aac"
+        }
+        media_type = mime_types.get(target_format, "application/octet-stream")
+        
+        return FileResponse(output_path, filename=output_filename, media_type=media_type)
     except ffmpeg.Error as e:
         error_message = e.stderr.decode('utf8') if e.stderr else str(e)
         raise HTTPException(status_code=500, detail=f"FFmpeg Error: {error_message}")
