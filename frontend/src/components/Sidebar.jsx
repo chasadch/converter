@@ -1,7 +1,7 @@
-import { FileText, Image, Video, Archive, Settings, Home } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, Home, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const location = useLocation();
 
     const links = [
@@ -14,36 +14,59 @@ const Sidebar = () => {
     ];
 
     return (
-        <div className="w-64 bg-surface/50 backdrop-blur-lg border-r border-border h-screen fixed left-0 top-0 flex flex-col p-4 z-20">
-            <div className="mb-8 px-4">
-                <h1 className="text-2xl font-bold gradient-text">Converter</h1>
-            </div>
+        <>
+            {/* Mobile Overlay */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden"
+                    onClick={onClose}
+                />
+            )}
 
-            <nav className="flex-1 space-y-2">
-                {links.map((link) => {
-                    const Icon = link.icon;
-                    const isActive = location.pathname === link.path;
+            {/* Sidebar Container */}
+            <div className={`
+                w-64 bg-surface/95 backdrop-blur-xl border-r border-border h-screen fixed left-0 top-0 flex flex-col p-4 z-40
+                transition-transform duration-300 ease-in-out
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+                md:translate-x-0
+            `}>
+                <div className="mb-8 px-4 flex justify-between items-center">
+                    <h1 className="text-2xl font-bold gradient-text">Converter</h1>
+                    <button
+                        onClick={onClose}
+                        className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
 
-                    return (
-                        <Link
-                            key={link.path}
-                            to={link.path}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
+                <nav className="flex-1 space-y-2 overflow-y-auto">
+                    {links.map((link) => {
+                        const Icon = link.icon;
+                        const isActive = location.pathname === link.path;
+
+                        return (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                onClick={() => onClose()} // Close on navigation (mobile)
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
                                     ? 'bg-primary text-white shadow-lg shadow-primary/25'
                                     : 'text-text-muted hover:bg-white/5 hover:text-text'
-                                }`}
-                        >
-                            <Icon size={20} />
-                            <span className="font-medium">{link.label}</span>
-                        </Link>
-                    );
-                })}
-            </nav>
+                                    }`}
+                            >
+                                <Icon size={20} />
+                                <span className="font-medium">{link.label}</span>
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-            <div className="p-4 text-xs text-text-muted text-center">
-                v2.0.0 • Premium Edition
+                <div className="p-4 text-xs text-text-muted text-center border-t border-border mt-4">
+                    v2.0.0 • Premium Edition
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

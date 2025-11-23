@@ -101,7 +101,7 @@ const Converter = ({
                 <p className="text-text-muted">{description}</p>
             </div>
 
-            <div className="glass-panel p-8 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10">
+            <div className="glass-panel p-4 md:p-8 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10">
 
                 {/* File Upload Area */}
                 {!file && (
@@ -145,12 +145,12 @@ const Converter = ({
                         {conversionOptions.length > 0 && (
                             <div>
                                 <label className="block text-sm font-medium mb-2 text-text-muted">{optionLabel}</label>
-                                <div className="grid grid-cols-3 gap-3">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                     {conversionOptions.map(opt => (
                                         <button
                                             key={opt.value}
                                             onClick={() => setSelectedOption(opt.value)}
-                                            className={`py-2 px-4 rounded-lg text-sm font-medium transition-all ${selectedOption === opt.value
+                                            className={`py-2 px-3 md:px-4 rounded-lg text-sm font-medium transition-all ${selectedOption === opt.value
                                                 ? 'bg-primary text-white shadow-lg shadow-primary/25'
                                                 : 'bg-surface border border-border hover:border-primary/50'
                                                 }`}
