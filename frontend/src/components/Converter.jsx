@@ -55,7 +55,8 @@ const Converter = ({
         }
 
         try {
-            const response = await axios.post(`http://localhost:8000${endpoint}`, formData, {
+            const API_URL = import.meta.env.PROD ? '' : 'http://localhost:8000';
+            const response = await axios.post(`${API_URL}${endpoint}`, formData, {
                 responseType: 'blob',
                 headers: {
                     'Content-Type': 'multipart/form-data',

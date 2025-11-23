@@ -11,7 +11,8 @@ const Utils = () => {
         try {
             const formData = new FormData();
             formData.append('text', inputText);
-            const response = await axios.post(`http://localhost:8000/convert/utils/base64-${action}`, formData);
+            const API_URL = import.meta.env.PROD ? '' : 'http://localhost:8000';
+            const response = await axios.post(`${API_URL}/convert/utils/base64-${action}`, formData);
             setOutputText(response.data);
         } catch (err) {
             setOutputText('Error: ' + (err.response?.data?.detail || err.message));
@@ -26,8 +27,8 @@ const Utils = () => {
                 <button
                     onClick={() => setActiveTab('base64')}
                     className={`px-6 py-2 rounded-full whitespace-nowrap transition-all ${activeTab === 'base64'
-                            ? 'bg-primary text-white shadow-lg shadow-primary/25'
-                            : 'bg-surface hover:bg-white/5 border border-border'
+                        ? 'bg-primary text-white shadow-lg shadow-primary/25'
+                        : 'bg-surface hover:bg-white/5 border border-border'
                         }`}
                 >
                     Base64 Converter
@@ -35,8 +36,8 @@ const Utils = () => {
                 <button
                     onClick={() => setActiveTab('json-yaml')}
                     className={`px-6 py-2 rounded-full whitespace-nowrap transition-all ${activeTab === 'json-yaml'
-                            ? 'bg-primary text-white shadow-lg shadow-primary/25'
-                            : 'bg-surface hover:bg-white/5 border border-border'
+                        ? 'bg-primary text-white shadow-lg shadow-primary/25'
+                        : 'bg-surface hover:bg-white/5 border border-border'
                         }`}
                 >
                     JSON ↔ YAML

@@ -1,3 +1,13 @@
+---
+title: All In One Converter
+emoji: 🔄
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # All-in-One File Converter
 
 A premium web application for converting PDF to Word and Word to PDF.
