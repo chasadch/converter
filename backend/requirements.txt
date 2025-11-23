@@ -2,6 +2,7 @@ fastapi
 uvicorn
 python-multipart
 pdf2docx
+pymupdf<1.25.0
 
 Pillow
 pandas
