@@ -201,7 +201,7 @@ const Converter = ({
                         <div className="flex flex-col gap-3">
                             <a
                                 href={downloadUrl}
-                                download={file ? `converted_${file.name.split('.')[0]}` : 'converted_file'} // Fallback name
+                                download={file ? `converted_${file.name.split('.')[0]}.${selectedOption ? selectedOption.toLowerCase() : 'converted'}` : 'converted_file'}
                                 className="w-full py-4 bg-primary hover:bg-primary-hover text-white rounded-xl font-medium transition-all duration-300 shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
                             >
                                 <Download size={20} />
