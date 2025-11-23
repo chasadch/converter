@@ -5,8 +5,13 @@ import shutil
 import uuid
 from ..config import UPLOAD_DIR, OUTPUT_DIR
 from pdf2docx import Converter
-from docx2pdf import convert
-import pythoncom
+try:
+    from docx2pdf import convert
+    import pythoncom
+except ImportError:
+    convert = None
+    pythoncom = None
+
 import pandas as pd
 import markdown
 import pdfkit
@@ -48,17 +53,23 @@ async def word_to_pdf(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     try:
+        if convert is None or pythoncom is None:
+            raise HTTPException(status_code=501, detail="Word to PDF conversion is only available on Windows servers with Microsoft Word installed.")
+
         # Initialize COM library for Windows
         pythoncom.CoInitialize()
         convert(input_path, output_path)
         return FileResponse(output_path, filename=output_filename, media_type="application/pdf")
+    except HTTPException:
+        raise
     except Exception as e:
         error_msg = str(e)
         if "CoInitialize" in error_msg or "class not registered" in error_msg.lower():
              raise HTTPException(status_code=500, detail="Server Error: Microsoft Word is not installed or configured correctly on the server.")
         raise HTTPException(status_code=500, detail=f"Conversion failed: {error_msg}")
     finally:
-        pythoncom.CoUninitialize()
+        if pythoncom:
+            pythoncom.CoUninitialize()
 
 @router.post("/convert/csv-to-excel")
 async def csv_to_excel(file: UploadFile = File(...)):
