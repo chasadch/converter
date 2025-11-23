@@ -1,0 +1,23 @@
+# All-in-One File Converter
+
+- [x] Project Initialization <!-- id: 0 -->
+    - [x] Create project directory structure <!-- id: 1 -->
+    - [x] Initialize `implementation_plan.md` <!-- id: 2 -->
+- [x] Frontend Development (React + Vite) <!-- id: 3 -->
+    - [x] Scaffold React app <!-- id: 4 -->
+    - [x] Setup Tailwind CSS <!-- id: 16 -->
+    - [x] Setup modern design system (CSS variables, typography) <!-- id: 5 -->
+    - [x] Create Converter Component (Drag & Drop, Selection) <!-- id: 6 -->
+    - [x] Implement API integration <!-- id: 7 -->
+- [x] Backend Development (Python + FastAPI) <!-- id: 8 -->
+    - [x] Setup virtual environment and dependencies <!-- id: 9 -->
+    - [x] Create FastAPI app structure <!-- id: 10 -->
+    - [x] Implement PDF to Word conversion endpoint <!-- id: 11 -->
+    - [x] Implement Word to PDF conversion endpoint <!-- id: 12 -->
+- [x] Verification & Polish <!-- id: 13 -->
+    - [x] Verify end-to-end flow <!-- id: 14 -->
+    - [x] Polish UI/UX (Animations, Transitions) <!-- id: 15 -->
+- [/] Project Export <!-- id: 17 -->
+    - [/] Create final project folder <!-- id: 18 -->
+    - [ ] Copy source code (excluding venv/node_modules) <!-- id: 19 -->
+    - [ ] Add documentation and setup scripts <!-- id: 20 -->

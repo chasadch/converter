@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+pdf2docx
+docx2pdf
+Pillow
+pandas
+openpyxl
+ffmpeg-python
+pyyaml
+markdown
+pdfkit
