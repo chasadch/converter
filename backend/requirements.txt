@@ -13,3 +13,4 @@ markdown
 pdfkit
 rembg
 onnxruntime
+pypdf

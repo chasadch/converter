@@ -9,6 +9,7 @@ import Media from './pages/Media';
 import Archives from './pages/Archives';
 import Utils from './pages/Utils';
 import BackgroundRemover from './pages/BackgroundRemover';
+import PdfTools from './pages/PdfTools';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,6 +40,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/documents" element={<Documents />} />
+              <Route path="/pdf-tools" element={<PdfTools />} />
               <Route path="/images" element={<Images />} />
               <Route path="/bg-remover" element={<BackgroundRemover />} />
               <Route path="/media" element={<Media />} />

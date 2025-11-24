@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.routers import documents, images, media, archives, utils
+from app.routers import documents, images, media, archives, utils, pdf_tools
 from app.config import UPLOAD_DIR, OUTPUT_DIR
 import os
 
@@ -23,6 +23,7 @@ app.include_router(images.router)
 app.include_router(media.router)
 app.include_router(archives.router)
 app.include_router(utils.router)
+app.include_router(pdf_tools.router)
 
 # Serve Frontend Static Files (Production)
 # We assume the frontend build is copied to 'static' directory in Docker
