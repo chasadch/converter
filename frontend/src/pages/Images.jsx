@@ -25,7 +25,12 @@ const Images = () => {
 
             <div className="mt-12 border-t border-border pt-12">
                 <Converter
-                    title="Background Remover"
+                    title={
+                        <span className="flex items-center gap-3">
+                            Background Remover
+                            <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full border border-primary/20">NEW</span>
+                        </span>
+                    }
                     description="Automatically remove the background from any image using AI."
                     endpoint="/convert/image/remove-bg"
                     acceptedFileTypes="image/*"
