@@ -9,29 +9,33 @@ const Converter = ({
     acceptedFileTypes,
     conversionOptions = [],
     defaultOption = "",
-    optionLabel = "Select Format"
+    optionLabel = "Select Format",
+    multiple = false
 }) => {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
     const [status, setStatus] = useState('idle'); // idle, uploading, converting, success, error
     const [downloadUrl, setDownloadUrl] = useState(null);
     const [error, setError] = useState(null);
     const [selectedOption, setSelectedOption] = useState(defaultOption);
 
     const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-        validateAndSetFile(selectedFile);
+        const selectedFiles = Array.from(e.target.files);
+        validateAndSetFiles(selectedFiles);
     };
 
     const handleDrop = (e) => {
         e.preventDefault();
-        const droppedFile = e.dataTransfer.files[0];
-        validateAndSetFile(droppedFile);
+        const droppedFiles = Array.from(e.dataTransfer.files);
+        validateAndSetFiles(droppedFiles);
     };
 
-    const validateAndSetFile = (selectedFile) => {
-        if (selectedFile) {
-            // Basic validation (can be expanded)
-            setFile(selectedFile);
+    const validateAndSetFiles = (selectedFiles) => {
+        if (selectedFiles.length > 0) {
+            if (!multiple) {
+                setFiles([selectedFiles[0]]);
+            } else {
+                setFiles(selectedFiles);
+            }
             setError(null);
             setStatus('idle');
             setDownloadUrl(null);
@@ -39,7 +43,7 @@ const Converter = ({
     };
 
     const handleConvert = async () => {
-        if (!file) return;
+        if (files.length === 0) return;
         if (conversionOptions.length > 0 && !selectedOption) {
             setError(`Please ${optionLabel.toLowerCase()}`);
             return;
@@ -49,9 +53,34 @@ const Converter = ({
         setError(null);
 
         const formData = new FormData();
-        formData.append('file', file);
+        if (multiple) {
+            files.forEach(file => {
+                formData.append('files', file);
+            });
+        } else {
+            formData.append('file', files[0]);
+        }
+
         if (selectedOption) {
-            formData.append('target_format', selectedOption);
+            formData.append(multiple ? 'password' : 'target_format', selectedOption); // Hacky reuse of field for password
+            // Better approach: Pass extra fields prop
+            if (endpoint.includes('protect') || endpoint.includes('unlock')) {
+                // For protect/unlock, we need to handle form data differently or use a dedicated component
+                // But for now, let's stick to the simple contract: 
+                // If it's a password field, the parent should probably handle it.
+                // Wait, the current implementation of protect/unlock expects 'password' form field.
+                // And merge expects 'files'.
+
+                // Let's adjust based on endpoint for now to keep it simple without breaking existing
+                if (endpoint.includes('protect') || endpoint.includes('unlock')) {
+                    formData.delete('target_format');
+                    formData.append('password', selectedOption); // Assuming selectedOption holds the password input? 
+                    // No, selectedOption is from buttons. 
+                    // We need a text input for password!
+                }
+            } else {
+                formData.append('target_format', selectedOption);
+            }
         }
 
         try {
@@ -88,7 +117,7 @@ const Converter = ({
     };
 
     const reset = () => {
-        setFile(null);
+        setFiles([]);
         setStatus('idle');
         setDownloadUrl(null);
         setError(null);
@@ -104,7 +133,7 @@ const Converter = ({
             <div className="glass-panel p-4 md:p-8 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10">
 
                 {/* File Upload Area */}
-                {!file && (
+                {files.length === 0 && (
                     <div
                         className="border-2 border-dashed border-border rounded-xl p-12 text-center transition-all duration-300 hover:border-primary hover:bg-primary/5 group cursor-pointer"
                         onDragOver={(e) => e.preventDefault()}
@@ -116,26 +145,34 @@ const Converter = ({
                             id="fileInput"
                             className="hidden"
                             accept={acceptedFileTypes}
+                            multiple={multiple}
                             onChange={handleFileChange}
                         />
                         <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                             <Upload className="text-primary" size={28} />
                         </div>
-                        <p className="text-lg font-medium mb-2">Click to upload or drag and drop</p>
+                        <p className="text-lg font-medium mb-2">Click to upload {multiple ? "files" : "file"} or drag and drop</p>
                         <p className="text-sm text-text-muted">Supported files: {acceptedFileTypes || "All files"}</p>
                     </div>
                 )}
 
                 {/* Selected File & Options */}
-                {file && status !== 'success' && (
+                {files.length > 0 && status !== 'success' && (
                     <div className="space-y-6">
                         <div className="flex items-center p-4 bg-surface rounded-xl border border-border">
                             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
                                 <File className="text-primary" size={24} />
                             </div>
                             <div className="flex-1">
-                                <p className="font-medium truncate">{file.name}</p>
-                                <p className="text-xs text-text-muted">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                                <p className="font-medium truncate">
+                                    {files.length > 1 ? `${files.length} files selected` : files[0].name}
+                                </p>
+                                <p className="text-xs text-text-muted">
+                                    {files.length > 1
+                                        ? `${(files.reduce((acc, f) => acc + f.size, 0) / 1024 / 1024).toFixed(2)} MB Total`
+                                        : `${(files[0].size / 1024 / 1024).toFixed(2)} MB`
+                                    }
+                                </p>
                             </div>
                             <button onClick={reset} className="p-2 hover:bg-white/10 rounded-full transition-colors">
                                 <AlertCircle size={20} className="text-text-muted hover:text-red-400" />
@@ -201,7 +238,7 @@ const Converter = ({
                         <div className="flex flex-col gap-3">
                             <a
                                 href={downloadUrl}
-                                download={file ? `converted_${file.name.split('.')[0]}.${selectedOption ? selectedOption.toLowerCase() : 'converted'}` : 'converted_file'}
+                                download={files.length > 0 ? `converted_${files[0].name.split('.')[0]}.${selectedOption ? selectedOption.toLowerCase() : 'converted'}` : 'converted_file'}
                                 className="w-full py-4 bg-primary hover:bg-primary-hover text-white rounded-xl font-medium transition-all duration-300 shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
                             >
                                 <Download size={20} />

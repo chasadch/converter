@@ -15,6 +15,7 @@ const PdfTools = () => {
                     optionLabel="Action"
                     defaultOption="Merge"
                     conversionOptions={[{ value: 'Merge', label: 'Merge Files' }]}
+                    multiple={true}
                 />
 
                 <div className="border-t border-border pt-12">
