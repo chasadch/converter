@@ -45,3 +45,31 @@ async def convert_image(file: UploadFile = File(...), target_format: str = Form(
     except Exception as e:
         print(f"Error converting image: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/convert/image/remove-bg")
+async def remove_background(file: UploadFile = File(...)):
+    try:
+        from rembg import remove
+        
+        file_id = str(uuid.uuid4())
+        input_path = os.path.join(UPLOAD_DIR, f"{file_id}_{file.filename}")
+        output_filename = f"{os.path.splitext(file.filename)[0]}_no_bg.png"
+        output_path = os.path.join(OUTPUT_DIR, f"{file_id}_{output_filename}")
+
+        with open(input_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        print(f"Removing background: {file.filename}")
+        with open(input_path, "rb") as i:
+            with open(output_path, "wb") as o:
+                input_data = i.read()
+                output_data = remove(input_data)
+                o.write(output_data)
+        
+        print("Background removed successfully")
+        return FileResponse(output_path, filename=output_filename, media_type="image/png")
+    except ImportError:
+         raise HTTPException(status_code=500, detail="Server Error: rembg library not installed.")
+    except Exception as e:
+        print(f"Error removing background: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

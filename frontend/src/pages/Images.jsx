@@ -22,6 +22,15 @@ const Images = () => {
                     { value: 'PDF', label: 'PDF' },
                 ]}
             />
+
+            <div className="mt-12 border-t border-border pt-12">
+                <Converter
+                    title="Background Remover"
+                    description="Automatically remove the background from any image using AI."
+                    endpoint="/convert/image/remove-bg"
+                    acceptedFileTypes="image/*"
+                />
+            </div>
         </div>
     );
 };

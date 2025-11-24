@@ -11,3 +11,5 @@ ffmpeg-python
 pyyaml
 markdown
 pdfkit
+rembg
+onnxruntime
