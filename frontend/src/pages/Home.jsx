@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Image, Video, Archive, Settings, ArrowRight } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, ArrowRight, Wand2 } from 'lucide-react';
 
 const Home = () => {
     const cards = [
         { title: 'Documents', icon: FileText, path: '/documents', desc: 'PDF, Word, Excel, Markdown' },
         { title: 'Images', icon: Image, path: '/images', desc: 'JPG, PNG, WebP, GIF' },
+        { title: 'Bg Remover', icon: Wand2, path: '/bg-remover', desc: 'AI Background Removal' },
         { title: 'Audio & Video', icon: Video, path: '/media', desc: 'MP4, MP3, WAV, AVI' },
         { title: 'Archives', icon: Archive, path: '/archives', desc: 'Zip Extraction & Creation' },
         { title: 'Utilities', icon: Settings, path: '/utils', desc: 'Base64, JSON, YAML' },
