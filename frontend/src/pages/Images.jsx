@@ -29,6 +29,7 @@ const Images = () => {
                     description="Automatically remove the background from any image using AI."
                     endpoint="/convert/image/remove-bg"
                     acceptedFileTypes="image/*"
+                    defaultOption="PNG"
                 />
             </div>
         </div>
