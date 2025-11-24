@@ -8,6 +8,7 @@ import Images from './pages/Images';
 import Media from './pages/Media';
 import Archives from './pages/Archives';
 import Utils from './pages/Utils';
+import BackgroundRemover from './pages/BackgroundRemover';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,6 +40,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/images" element={<Images />} />
+              <Route path="/bg-remover" element={<BackgroundRemover />} />
               <Route path="/media" element={<Media />} />
               <Route path="/archives" element={<Archives />} />
               <Route path="/utils" element={<Utils />} />
