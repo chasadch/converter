@@ -6,54 +6,54 @@
 @tailwind utilities;
 
 :root {
-  /* Primary Colors */
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-light: #eef2ff;
-  --primary-dark: #3730a3;
+  /* Primary Colors - Smallpdf Red */
+  --primary: #FF6057;
+  --primary-hover: #E54D45;
+  --primary-light: #FFE5E3;
+  --primary-dark: #CC4A42;
 
-  /* Secondary Colors */
-  --secondary: #06b6d4;
+  /* Secondary Colors - Minimal */
+  --secondary: #FFvariant;
   --secondary-hover: #0891b2;
-  --accent: #ec4899;
-  --accent-hover: #db2777;
+  --accent: #FF6057;
+  --accent-hover: #E54D45;
 
   /* Neutral Colors - Light Mode */
-  --background: #ffffff;
-  --surface: #f8fafc;
-  --surface-hover: #f1f5f9;
-  --surface-elevated: #ffffff;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
+  --background: #F7F7F7;
+  --surface: #FFFFFF;
+  --surface-hover: #F5F5F5;
+  --surface-elevated: #FFFFFF;
+  --text: #1A1A1A;
+  --text-muted: #6B6B6B;
+  --text-light: #999999;
+  --border: #E0E0E0;
+  --border-light: #F0F0F0;
 
   /* Status Colors */
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --error: #ef4444;
-  --error-light: #fee2e2;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --info: #3b82f6;
-  --info-light: #dbeafe;
+  --success: #4CAF50;
+  --success-light: #E8F5E9;
+  --error: #F44336;
+  --error-light: #FFEBEE;
+  --warning: #FF9800;
+  --warning-light: #FFF3E0;
+  --info: #2196F3;
+  --info-light: #E3F2FD;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /* Shadows - Softer */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 16px 48px 0 rgba(0, 0, 0, 0.2);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
 
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 20px;
-  --radius-3xl: 24px;
+  /* Border Radius - More subtle */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
   --radius-full: 9999px;
 
   /* Transitions */
@@ -62,29 +62,29 @@
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark Mode */
+/* Dark Mode - Adjusted for red theme */
 [data-theme='dark'] {
-  --background: #0f172a;
-  --surface: #1e293b;
-  --surface-hover: #334155;
-  --surface-elevated: #1e293b;
-  --text: #f1f5f9;
-  --text-muted: #94a3b8;
-  --text-light: #64748b;
-  --border: #334155;
-  --border-light: #1e293b;
+  --background: #121212;
+  --surface: #1E1E1E;
+  --surface-hover: #2A2A2A;
+  --surface-elevated: #242424;
+  --text: #E5E5E5;
+  --text-muted: #A0A0A0;
+  --text-light: #707070;
+  --border: #333333;
+  --border-light: #282828;
 
-  --primary-light: #312e81;
-  --success-light: #064e3b;
-  --error-light: #7f1d1d;
-  --warning-light: #78350f;
-  --info-light: #1e3a8a;
+  --primary-light: #4A1F1D;
+  --success-light: #1B5E20;
+  --error-light: #B71C1C;
+  --warning-light: #E65100;
+  --info-light: #0D47A1;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.7);
+  --shadow-2xl: 0 16px 48px 0 rgba(0, 0, 0, 0.8);
 }
 
 
@@ -139,41 +139,25 @@ body {
   display: inline-block;
 }
 
-/* Enhanced Buttons */
+/* Enhanced Buttons - Smallpdf Style */
 .btn-primary {
   position: relative;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: var(--primary);
   color: white;
-  padding: 0.875rem 1.75rem;
+  padding: 14px 28px;
   border-radius: var(--radius-lg);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
   transition: all var(--transition-base);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  overflow: hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
-  opacity: 0;
-  transition: opacity var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-}
-
-.btn-primary:hover::before {
-  opacity: 1;
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:active {
@@ -181,7 +165,7 @@ body {
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -190,10 +174,10 @@ body {
 .btn-secondary {
   background: var(--surface);
   color: var(--text);
-  padding: 0.875rem 1.75rem;
+  padding: 14px 28px;
   border-radius: var(--radius-lg);
   font-weight: 600;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   cursor: pointer;
   transition: all var(--transition-base);
 }
@@ -201,9 +185,8 @@ body {
 .btn-secondary:hover {
   border-color: var(--primary);
   color: var(--primary);
-  background: var(--primary-light);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Enhanced Drop Zone */
