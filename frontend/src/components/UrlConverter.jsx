@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, Loader2, ArrowRight, Download, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
+import { Link as LinkIcon, Loader2, ArrowRight, Download, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
 
 const UrlConverter = ({
     title,
@@ -89,7 +89,7 @@ const UrlConverter = ({
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-medium text-text-muted">Video URL</label>
                             <div className="flex items-center gap-2 bg-surface border border-border rounded-xl p-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
-                                <Link className="text-text-muted ml-2" size={20} />
+                                <LinkIcon className="text-text-muted ml-2" size={20} />
                                 <input
                                     type="url"
                                     value={url}
