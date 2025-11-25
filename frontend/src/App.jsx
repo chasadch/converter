@@ -14,6 +14,8 @@ import OCR from './pages/OCR';
 import QRGenerator from './pages/QRGenerator';
 import PDFAdvanced from './pages/PDFAdvanced';
 import HashGenerator from './pages/HashGenerator';
+import ImageToolkit from './pages/ImageToolkit';
+import DevTools from './pages/DevTools';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
               <Route path="/ocr" element={<OCR />} />
               <Route path="/qr-generator" element={<QRGenerator />} />
               <Route path="/hash-generator" element={<HashGenerator />} />
+              <Route path="/image-toolkit" element={<ImageToolkit />} />
+              <Route path="/dev-tools" element={<DevTools />} />
               <Route path="/media" element={<Media />} />
               <Route path="/archives" element={<Archives />} />
               <Route path="/utils" element={<Utils />} />

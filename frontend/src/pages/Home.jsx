@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle, ScanText, QrCode, Merge, Hash } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle, ScanText, QrCode, Merge, Hash, Palette, Code } from 'lucide-react';
 
 const Home = () => {
     const tools = [
@@ -63,6 +63,18 @@ const Home = () => {
             icon: Hash,
             path: '/hash-generator',
             desc: 'Generate file hashes (MD5, SHA256)',
+        },
+        {
+            title: 'Image Toolkit',
+            icon: Palette,
+            path: '/image-toolkit',
+            desc: 'Filters, EXIF data, color palette',
+        },
+        {
+            title: 'Developer Tools',
+            icon: Code,
+            path: '/dev-tools',
+            desc: 'JSON, UUID, URL, Lorem Ipsum',
         },
         {
             title: 'Archive Creator',
