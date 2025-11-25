@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle, ScanText } from 'lucide-react';
 
 const Home = () => {
     const tools = [
@@ -33,6 +33,12 @@ const Home = () => {
             icon: Wand2,
             path: '/bg-remover',
             desc: 'Remove background from images',
+        },
+        {
+            title: 'OCR - Text Extract',
+            icon: ScanText,
+            path: '/ocr',
+            desc: 'Extract text from images (OCR)',
         },
         {
             title: 'Video Converter',
@@ -151,4 +157,3 @@ const Home = () => {
 };
 
 export default Home;
-
