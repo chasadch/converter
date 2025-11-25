@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  allinone-converter:
+    build: .
+    ports:
+      - "7860:7860"
+    dns:
+      - 8.8.8.8      # Google DNS Primary
+      - 8.8.4.4      # Google DNS Secondary
+      - 1.1.1.1      # Cloudflare DNS
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - FFMPEG_PATH=ffmpeg
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/outputs:/app/outputs
+    restart: unless-stopped
+    networks:
+      - converter-network
+    # Enable internet access
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+
+networks:
+  converter-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-converter
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+

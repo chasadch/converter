@@ -16,6 +16,8 @@ A premium web application for converting PDF to Word and Word to PDF.
 - **Python 3.8+**: Ensure Python is installed and added to PATH.
 - **Node.js**: Ensure Node.js and npm are installed.
 - **Microsoft Word**: Required for Word to PDF conversion on Windows.
+- **FFmpeg**: Required for video/audio conversions (auto-installed in Docker).
+- **Internet Connection**: Required for video download feature.
 
 ## Quick Start (Windows)
 Double-click the `run.bat` file to automatically set up dependencies and start the application.
@@ -54,3 +56,32 @@ Double-click the `run.bat` file to automatically set up dependencies and start t
 
 ## Accessing the App
 Open your browser and go to: [http://localhost:5173](http://localhost:5173)
+
+## Docker Deployment
+
+### Quick Start with Docker Compose (Recommended)
+```bash
+docker-compose up -d
+```
+Access at: [http://localhost:7860](http://localhost:7860)
+
+### Manual Docker Build
+```bash
+# Build the image
+docker build -t allinone-converter .
+
+# Run with DNS configuration (fixes video download issues)
+docker run -p 7860:7860 --dns 8.8.8.8 --dns 8.8.4.4 allinone-converter
+```
+
+### Troubleshooting
+If you encounter **"Failed to resolve 'www.youtube.com'"** error:
+- See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for DNS fixes
+- Run network test: `cd backend && python test_network.py`
+
+## Testing Network Connectivity
+```bash
+cd backend
+python test_network.py
+```
+This will verify DNS, HTTPS, yt-dlp, and FFmpeg are working correctly.

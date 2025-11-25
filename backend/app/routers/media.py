@@ -48,6 +48,30 @@ async def convert_media(file: UploadFile = File(...), target_format: str = Form(
 @router.post("/convert/media/download")
 async def download_video(url: str = Form(...), format: str = Form("mp4")):
     import yt_dlp
+    import socket
+    
+    # Pre-flight DNS and connectivity check
+    import requests
+    try:
+        # Test DNS resolution first
+        socket.gethostbyname('www.youtube.com')
+        # Test HTTPS connectivity
+        requests.get("https://www.youtube.com", timeout=10)
+    except socket.gaierror as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"DNS Resolution Error: Cannot resolve domain names. This usually means:\n"
+                   f"1. Docker container has no internet access\n"
+                   f"2. DNS servers are not configured\n"
+                   f"3. Firewall is blocking connections\n\n"
+                   f"Fix: Run 'docker run --dns 8.8.8.8 --dns 8.8.4.4 ...' or check your network settings.\n"
+                   f"Technical details: {str(e)}"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Network Error: Cannot connect to the internet. Details: {str(e)}"
+        )
     
     file_id = str(uuid.uuid4())
     output_template = os.path.join(OUTPUT_DIR, f"{file_id}_%(title)s.%(ext)s")
@@ -56,17 +80,17 @@ async def download_video(url: str = Form(...), format: str = Form("mp4")):
         'format': 'bestvideo+bestaudio/best' if format == 'mp4' else 'bestaudio/best',
         'outtmpl': output_template,
         'postprocessors': [{'key': 'FFmpegVideoConvertor', 'preferedformat': format}] if format == 'mp4' else [{'key': 'FFmpegExtractAudio', 'preferredcodec': format}],
-        'quiet': True,
-        'no_warnings': True,
+        'quiet': False,  # Changed to False for better error messages
+        'no_warnings': False,
+        'verbose': True,
         'force_ipv4': True,
+        'socket_timeout': 30,
+        'retries': 3,
+        'fragment_retries': 3,
+        'source_address': '0.0.0.0',  # Bind to all interfaces
+        'nocheckcertificate': False,
+        'prefer_insecure': False,
     }
-
-    # Pre-flight check: Verify internet connectivity
-    import requests
-    try:
-        requests.get("https://www.google.com", timeout=5)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"System Network Error: Container cannot reach the internet. DNS/Network failure. Details: {str(e)}")
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
