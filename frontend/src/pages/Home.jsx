@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle, ScanText, QrCode, Merge, Hash, Palette, Code } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, Wand2, FileCheck, CheckCircle, ScanText, QrCode, Merge, Hash, Palette, Code, Edit } from 'lucide-react';
 
 const Home = () => {
     const tools = [
@@ -21,6 +21,12 @@ const Home = () => {
             icon: FileText,
             path: '/pdf-tools',
             desc: 'Reduce the size of your PDF',
+        },
+        {
+            title: 'PDF Editor',
+            icon: Edit,
+            path: '/pdf-editor',
+            desc: 'Edit text, add images & watermarks',
         },
         {
             title: 'Image Converter',

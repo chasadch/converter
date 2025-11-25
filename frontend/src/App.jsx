@@ -16,6 +16,7 @@ import PDFAdvanced from './pages/PDFAdvanced';
 import HashGenerator from './pages/HashGenerator';
 import ImageToolkit from './pages/ImageToolkit';
 import DevTools from './pages/DevTools';
+import PDFEditor from './pages/PDFEditor';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               <Route path="/hash-generator" element={<HashGenerator />} />
               <Route path="/image-toolkit" element={<ImageToolkit />} />
               <Route path="/dev-tools" element={<DevTools />} />
+              <Route path="/pdf-editor" element={<PDFEditor />} />
               <Route path="/media" element={<Media />} />
               <Route path="/archives" element={<Archives />} />
               <Route path="/utils" element={<Utils />} />
