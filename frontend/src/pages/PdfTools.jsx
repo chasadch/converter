@@ -16,6 +16,7 @@ const PdfTools = () => {
                     defaultOption="Merge"
                     conversionOptions={[{ value: 'Merge', label: 'Merge Files' }]}
                     multiple={true}
+                    outputExtension="pdf"
                 />
 
                 <div className="border-t border-border pt-12">
@@ -27,6 +28,7 @@ const PdfTools = () => {
                         optionLabel="Action"
                         defaultOption="Protect"
                         conversionOptions={[{ value: 'Protect', label: 'Encrypt PDF' }]}
+                        outputExtension="pdf"
                     />
                 </div>
 
@@ -39,6 +41,7 @@ const PdfTools = () => {
                         optionLabel="Action"
                         defaultOption="Unlock"
                         conversionOptions={[{ value: 'Unlock', label: 'Decrypt PDF' }]}
+                        outputExtension="pdf"
                     />
                 </div>
 
@@ -51,6 +54,7 @@ const PdfTools = () => {
                         optionLabel="Action"
                         defaultOption="Compress"
                         conversionOptions={[{ value: 'Compress', label: 'Compress PDF' }]}
+                        outputExtension="pdf"
                     />
                 </div>
             </div>
