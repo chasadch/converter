@@ -12,18 +12,22 @@ const Documents = () => {
     ];
 
     return (
-        <div className="p-8 max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8 gradient-text">Document Tools</h1>
+        <div className="p-6 md:p-12 max-w-5xl mx-auto">
+            <div className="mb-10 animate-fade-in">
+                <h1 className="text-3xl md:text-4xl font-bold mb-3 gradient-text">Document Tools</h1>
+                <p className="text-text-muted text-lg">Convert and manage your documents with ease</p>
+            </div>
 
-            <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+            <div className="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-thin">
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`px-6 py-2 rounded-full whitespace-nowrap transition-all ${activeTab === tab.id
-                                ? 'bg-primary text-white shadow-lg shadow-primary/25'
-                                : 'bg-surface hover:bg-white/5 border border-border'
-                            }`}
+                        className={`px-6 py-3 rounded-xl whitespace-nowrap font-semibold transition-all ${
+                            activeTab === tab.id
+                                ? 'bg-primary text-white shadow-lg scale-105'
+                                : 'bg-white hover:bg-surface border border-border text-text'
+                        }`}
                     >
                         {tab.label}
                     </button>

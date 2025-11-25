@@ -3,10 +3,13 @@ import Converter from '../components/Converter';
 
 const PdfTools = () => {
     return (
-        <div className="p-8 max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8 gradient-text">PDF Tools</h1>
+        <div className="p-6 md:p-12">
+            <div className="max-w-5xl mx-auto mb-10 animate-fade-in">
+                <h1 className="text-3xl md:text-4xl font-bold mb-3 gradient-text">PDF Tools</h1>
+                <p className="text-text-muted text-lg">Merge, protect, unlock, and compress PDF files</p>
+            </div>
 
-            <div className="space-y-12">
+            <div className="space-y-16 max-w-4xl mx-auto">
                 <Converter
                     title="Merge PDFs"
                     description="Combine multiple PDF files into a single document. Order is preserved."

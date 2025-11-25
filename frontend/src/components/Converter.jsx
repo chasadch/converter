@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Upload, File, CheckCircle, AlertCircle, Loader2, ArrowRight, Download, RefreshCw } from 'lucide-react';
+import { Upload, File, CheckCircle, AlertCircle, Loader2, ArrowRight, Download, RefreshCw, X } from 'lucide-react';
 
 const Converter = ({
     title,
@@ -18,6 +18,7 @@ const Converter = ({
     const [downloadUrl, setDownloadUrl] = useState(null);
     const [error, setError] = useState(null);
     const [selectedOption, setSelectedOption] = useState(defaultOption);
+    const [dragActive, setDragActive] = useState(false);
 
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -26,15 +27,26 @@ const Converter = ({
 
     const handleDrop = (e) => {
         e.preventDefault();
+        setDragActive(false);
         const droppedFiles = Array.from(e.dataTransfer.files);
         validateAndSetFiles(droppedFiles);
+    };
+
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
     };
 
     const handleAddFiles = (e) => {
         const newFiles = Array.from(e.target.files);
         if (newFiles.length > 0) {
             setFiles(prev => [...prev, ...newFiles]);
-            e.target.value = null; // Reset input
+            e.target.value = null;
         }
     };
 
@@ -49,6 +61,10 @@ const Converter = ({
             setStatus('idle');
             setDownloadUrl(null);
         }
+    };
+
+    const removeFile = (index) => {
+        setFiles(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleConvert = async () => {
@@ -71,22 +87,8 @@ const Converter = ({
         }
 
         if (selectedOption) {
-            formData.append(multiple ? 'password' : 'target_format', selectedOption); // Hacky reuse of field for password
-            // Better approach: Pass extra fields prop
             if (endpoint.includes('protect') || endpoint.includes('unlock')) {
-                // For protect/unlock, we need to handle form data differently or use a dedicated component
-                // But for now, let's stick to the simple contract: 
-                // If it's a password field, the parent should probably handle it.
-                // Wait, the current implementation of protect/unlock expects 'password' form field.
-                // And merge expects 'files'.
-
-                // Let's adjust based on endpoint for now to keep it simple without breaking existing
-                if (endpoint.includes('protect') || endpoint.includes('unlock')) {
-                    formData.delete('target_format');
-                    formData.append('password', selectedOption); // Assuming selectedOption holds the password input? 
-                    // No, selectedOption is from buttons. 
-                    // We need a text input for password!
-                }
+                formData.append('password', selectedOption);
             } else {
                 formData.append('target_format', selectedOption);
             }
@@ -101,7 +103,6 @@ const Converter = ({
                 },
             });
 
-            // Create download link
             const blob = new Blob([response.data], { type: response.headers['content-type'] });
             const url = window.URL.createObjectURL(blob);
             setDownloadUrl(url);
@@ -110,7 +111,6 @@ const Converter = ({
             console.error("Conversion error:", err);
             setStatus('error');
 
-            // Try to read the error message from the blob
             if (err.response && err.response.data instanceof Blob) {
                 const text = await err.response.data.text();
                 try {
@@ -130,22 +130,26 @@ const Converter = ({
         setStatus('idle');
         setDownloadUrl(null);
         setError(null);
+        setSelectedOption(defaultOption);
     };
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold mb-3 gradient-text">{title}</h2>
-                <p className="text-text-muted">{description}</p>
+        <div className="max-w-3xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-8 animate-fade-in">
+                <h2 className="text-3xl md:text-4xl font-bold mb-3 gradient-text">{title}</h2>
+                <p className="text-text-muted text-lg">{description}</p>
             </div>
 
-            <div className="glass-panel p-4 md:p-8 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10">
-
+            <div className="card p-6 md:p-10 animate-scale-in">
+                
                 {/* File Upload Area */}
-                {files.length === 0 && (
+                {files.length === 0 && status !== 'success' && (
                     <div
-                        className="border-2 border-dashed border-border rounded-xl p-12 text-center transition-all duration-300 hover:border-primary hover:bg-primary/5 group cursor-pointer"
-                        onDragOver={(e) => e.preventDefault()}
+                        className={`drop-zone ${dragActive ? 'active' : ''}`}
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
                         onDrop={handleDrop}
                         onClick={() => document.getElementById('fileInput').click()}
                     >
@@ -157,67 +161,78 @@ const Converter = ({
                             multiple={multiple}
                             onChange={handleFileChange}
                         />
-                        <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                            <Upload className="text-primary" size={28} />
+                        <div className="w-20 h-20 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg">
+                            <Upload className="text-primary" size={36} />
                         </div>
-                        <p className="text-lg font-medium mb-2">Click to upload {multiple ? "files" : "file"} or drag and drop</p>
-                        <p className="text-sm text-text-muted">Supported files: {acceptedFileTypes || "All files"}</p>
+                        <h3 className="text-xl font-semibold mb-2 text-text">
+                            Drop {multiple ? "files" : "file"} here or click to browse
+                        </h3>
+                        <p className="text-text-muted">
+                            {acceptedFileTypes ? `Supported: ${acceptedFileTypes}` : 'All file types supported'}
+                        </p>
                     </div>
                 )}
 
-                {/* Selected File & Options */}
+                {/* Selected Files */}
                 {files.length > 0 && status !== 'success' && (
-                    <div className="space-y-6">
-                        <div className="flex items-center p-4 bg-surface rounded-xl border border-border">
-                            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
-                                <File className="text-primary" size={24} />
-                            </div>
-                            <div className="flex-1">
-                                <p className="font-medium truncate">
-                                    {files.length > 1 ? `${files.length} files selected` : files[0].name}
-                                </p>
-                                <p className="text-xs text-text-muted">
-                                    {files.length > 1
-                                        ? `${(files.reduce((acc, f) => acc + f.size, 0) / 1024 / 1024).toFixed(2)} MB Total`
-                                        : `${(files[0].size / 1024 / 1024).toFixed(2)} MB`
-                                    }
-                                </p>
-                                {multiple && (
-                                    <div className="mt-1">
-                                        <button
-                                            onClick={() => document.getElementById('addFileInput').click()}
-                                            className="text-primary text-xs font-medium hover:underline flex items-center gap-1"
-                                        >
-                                            + Add more files
-                                        </button>
-                                        <input
-                                            type="file"
-                                            id="addFileInput"
-                                            className="hidden"
-                                            accept={acceptedFileTypes}
-                                            multiple={true}
-                                            onChange={handleAddFiles}
-                                        />
+                    <div className="space-y-6 animate-fade-in">
+                        <div className="space-y-3">
+                            {files.map((file, index) => (
+                                <div key={index} className="flex items-center p-4 bg-surface rounded-xl border border-border group hover:border-primary transition-all">
+                                    <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center mr-4 shrink-0">
+                                        <File className="text-primary" size={24} />
                                     </div>
-                                )}
-                            </div>
-                            <button onClick={reset} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                                <AlertCircle size={20} className="text-text-muted hover:text-red-400" />
-                            </button>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="font-medium truncate text-text">{file.name}</p>
+                                        <p className="text-sm text-text-muted">
+                                            {(file.size / 1024 / 1024).toFixed(2)} MB
+                                        </p>
+                                    </div>
+                                    {files.length > 1 && (
+                                        <button 
+                                            onClick={() => removeFile(index)} 
+                                            className="p-2 hover:bg-red-50 rounded-lg transition-colors ml-2"
+                                        >
+                                            <X size={20} className="text-text-muted hover:text-error" />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
                         </div>
 
+                        {multiple && files.length > 0 && (
+                            <div>
+                                <button
+                                    onClick={() => document.getElementById('addFileInput').click()}
+                                    className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+                                >
+                                    + Add more files
+                                </button>
+                                <input
+                                    type="file"
+                                    id="addFileInput"
+                                    className="hidden"
+                                    accept={acceptedFileTypes}
+                                    multiple={true}
+                                    onChange={handleAddFiles}
+                                />
+                            </div>
+                        )}
+
+                        {/* Format Options */}
                         {conversionOptions.length > 0 && (
                             <div>
-                                <label className="block text-sm font-medium mb-2 text-text-muted">{optionLabel}</label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <label className="block text-sm font-semibold mb-3 text-text">{optionLabel}</label>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                     {conversionOptions.map(opt => (
                                         <button
                                             key={opt.value}
                                             onClick={() => setSelectedOption(opt.value)}
-                                            className={`py-2 px-3 md:px-4 rounded-lg text-sm font-medium transition-all ${selectedOption === opt.value
-                                                ? 'bg-primary text-white shadow-lg shadow-primary/25'
-                                                : 'bg-surface border border-border hover:border-primary/50'
-                                                }`}
+                                            className={`py-3 px-4 rounded-xl text-sm font-semibold transition-all ${
+                                                selectedOption === opt.value
+                                                    ? 'bg-primary text-white shadow-lg scale-105'
+                                                    : 'bg-surface border border-border hover:border-primary hover:bg-primary-light text-text'
+                                            }`}
                                         >
                                             {opt.label}
                                         </button>
@@ -226,46 +241,60 @@ const Converter = ({
                             </div>
                         )}
 
+                        {/* Error Message */}
                         {error && (
-                            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-200">
-                                <AlertCircle className="shrink-0 mt-0.5" size={18} />
-                                <p className="text-sm">{error}</p>
+                            <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-red-700 animate-fade-in">
+                                <AlertCircle className="shrink-0 mt-0.5" size={20} />
+                                <div className="flex-1">
+                                    <p className="font-semibold mb-1">Conversion Failed</p>
+                                    <p className="text-sm">{error}</p>
+                                </div>
                             </div>
                         )}
 
-                        <button
-                            onClick={handleConvert}
-                            disabled={status === 'converting'}
-                            className="w-full py-4 bg-primary hover:bg-primary-hover text-white rounded-xl font-medium transition-all duration-300 shadow-lg shadow-primary/25 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                        >
-                            {status === 'converting' ? (
-                                <>
-                                    <Loader2 className="animate-spin" size={20} />
-                                    Converting...
-                                </>
-                            ) : (
-                                <>
-                                    Convert Now
-                                    <ArrowRight size={20} />
-                                </>
-                            )}
-                        </button>
+                        {/* Convert Button */}
+                        <div className="flex gap-3">
+                            <button
+                                onClick={handleConvert}
+                                disabled={status === 'converting'}
+                                className="flex-1 btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {status === 'converting' ? (
+                                    <>
+                                        <Loader2 className="animate-spin" size={20} />
+                                        Converting...
+                                    </>
+                                ) : (
+                                    <>
+                                        Convert Now
+                                        <ArrowRight size={20} />
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                onClick={reset}
+                                className="px-6 btn-secondary"
+                            >
+                                Reset
+                            </button>
+                        </div>
                     </div>
                 )}
 
                 {/* Success State */}
                 {status === 'success' && (
-
-                    <div className="text-center py-8 animate-fade-in">
-                        <div className="w-20 h-20 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle size={40} />
+                    <div className="text-center py-12 animate-scale-in">
+                        <div className="w-24 h-24 bg-green-100 text-success rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <CheckCircle size={48} />
                         </div>
-                        <h3 className="text-2xl font-bold mb-2">Conversion Complete!</h3>
-                        <div className="flex flex-col gap-3">
+                        <h3 className="text-2xl font-bold mb-2 text-text">Conversion Complete!</h3>
+                        <p className="text-text-muted mb-8">Your file is ready to download</p>
+                        
+                        <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                             <a
                                 href={downloadUrl}
-                                download={files.length > 0 ? `converted_${files[0].name.split('.')[0]}.${outputExtension ? outputExtension : (selectedOption ? selectedOption.toLowerCase() : 'converted')}` : 'converted_file'}
-                                className="w-full py-4 bg-primary hover:bg-primary-hover text-white rounded-xl font-medium transition-all duration-300 shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
+                                download={files.length > 0 ? `converted_${files[0].name.split('.')[0]}.${outputExtension || (selectedOption ? selectedOption.toLowerCase() : 'converted')}` : 'converted_file'}
+                                className="flex-1 btn-primary flex items-center justify-center gap-2"
                             >
                                 <Download size={20} />
                                 Download File
@@ -273,7 +302,7 @@ const Converter = ({
 
                             <button
                                 onClick={reset}
-                                className="w-full py-4 bg-surface hover:bg-white/5 border border-border rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                                className="flex-1 btn-secondary flex items-center justify-center gap-2"
                             >
                                 <RefreshCw size={20} />
                                 Convert Another
