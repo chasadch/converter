@@ -13,6 +13,7 @@ FROM python:3.9
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV FFMPEG_PATH=ffmpeg
+# Build timestamp: 2025-11-25
 
 # Install system dependencies (FFmpeg is crucial)
 RUN apt-get update && apt-get install -y \
