@@ -58,6 +58,7 @@ async def download_video(url: str = Form(...), format: str = Form("mp4")):
         'postprocessors': [{'key': 'FFmpegVideoConvertor', 'preferedformat': format}] if format == 'mp4' else [{'key': 'FFmpegExtractAudio', 'preferredcodec': format}],
         'quiet': True,
         'no_warnings': True,
+        'force_ipv4': True,
     }
 
     try:
