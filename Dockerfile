@@ -15,9 +15,11 @@ ENV PYTHONUNBUFFERED=1
 ENV FFMPEG_PATH=ffmpeg
 # Build timestamp: 2025-11-25
 
-# Install system dependencies (FFmpeg is crucial)
+# Install system dependencies (FFmpeg and Tesseract OCR)
 RUN apt-get update && apt-get install -y \
     ffmpeg \
+    tesseract-ocr \
+    tesseract-ocr-eng \
     libsm6 \
     libxext6 \
     ca-certificates \
