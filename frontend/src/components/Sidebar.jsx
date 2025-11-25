@@ -1,4 +1,4 @@
-import { FileText, Image, Video, Archive, Settings, Home, X, Wand2, FileCheck } from 'lucide-react';
+import { FileText, Image, Video, Archive, Settings, Home, X, Wand2, FileCheck, Youtube } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -10,7 +10,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/pdf-tools', label: 'PDF Tools', icon: FileCheck },
         { path: '/images', label: 'Images', icon: Image },
         { path: '/bg-remover', label: 'Bg Remover', icon: Wand2 },
-        { path: '/media', label: 'Audio & Video', icon: Video },
+        { path: '/video-tools', label: 'Video Tools', icon: Youtube },
+        { path: '/media', label: 'Converter', icon: Video },
         { path: '/archives', label: 'Archives', icon: Archive },
         { path: '/utils', label: 'Utilities', icon: Settings },
     ];
