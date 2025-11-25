@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, FileText, Image, Video, Archive, Settings, Wand2, FileCheck, ChevronDown, ScanText } from 'lucide-react';
+import { Menu, X, FileText, Image, Video, Archive, Settings, Wand2, FileCheck, ChevronDown, ScanText, QrCode, Merge, Hash } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
@@ -11,9 +11,12 @@ const Navbar = () => {
     const tools = [
         { path: '/documents', label: 'Documents', icon: FileText },
         { path: '/pdf-tools', label: 'PDF Tools', icon: FileCheck },
+        { path: '/pdf-advanced', label: 'PDF Advanced', icon: Merge },
         { path: '/images', label: 'Images', icon: Image },
         { path: '/bg-remover', label: 'Background Remover', icon: Wand2 },
         { path: '/ocr', label: 'OCR (Text Extract)', icon: ScanText },
+        { path: '/qr-generator', label: 'QR & Barcode', icon: QrCode },
+        { path: '/hash-generator', label: 'Hash Generator', icon: Hash },
         { path: '/media', label: 'Audio & Video', icon: Video },
         { path: '/archives', label: 'Archives', icon: Archive },
         { path: '/utils', label: 'Utilities', icon: Settings },

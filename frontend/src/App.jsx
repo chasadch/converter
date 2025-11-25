@@ -11,6 +11,9 @@ import Utils from './pages/Utils';
 import BackgroundRemover from './pages/BackgroundRemover';
 import PdfTools from './pages/PdfTools';
 import OCR from './pages/OCR';
+import QRGenerator from './pages/QRGenerator';
+import PDFAdvanced from './pages/PDFAdvanced';
+import HashGenerator from './pages/HashGenerator';
 
 function App() {
   return (
@@ -30,9 +33,12 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/pdf-tools" element={<PdfTools />} />
+              <Route path="/pdf-advanced" element={<PDFAdvanced />} />
               <Route path="/images" element={<Images />} />
               <Route path="/bg-remover" element={<BackgroundRemover />} />
               <Route path="/ocr" element={<OCR />} />
+              <Route path="/qr-generator" element={<QRGenerator />} />
+              <Route path="/hash-generator" element={<HashGenerator />} />
               <Route path="/media" element={<Media />} />
               <Route path="/archives" element={<Archives />} />
               <Route path="/utils" element={<Utils />} />

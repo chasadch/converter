@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, JSONResponse
 import base64
 import json
 import yaml
@@ -13,6 +13,44 @@ async def base64_encode(text: str = Form(...)):
         return PlainTextResponse(encoded)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/utils/hash")
+async def generate_hash(file: UploadFile = File(...), algorithm: str = Form("sha256")):
+    """
+    Generate file hash/checksum
+    Supported: md5, sha1, sha256, sha512
+    """
+    import hashlib
+    
+    try:
+        algorithms = {
+            'md5': hashlib.md5,
+            'sha1': hashlib.sha1,
+            'sha256': hashlib.sha256,
+            'sha512': hashlib.sha512,
+        }
+        
+        if algorithm.lower() not in algorithms:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported algorithm. Use: {', '.join(algorithms.keys())}"
+            )
+        
+        hasher = algorithms[algorithm.lower()]()
+        contents = await file.read()
+        hasher.update(contents)
+        
+        return JSONResponse(content={
+            "filename": file.filename,
+            "algorithm": algorithm.lower(),
+            "hash": hasher.hexdigest(),
+            "size_bytes": len(contents)
+        })
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Hash failed: {str(e)}")
 
 @router.post("/convert/utils/base64-decode")
 async def base64_decode(text: str = Form(...)):

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.routers import documents, images, media, archives, utils, pdf_tools, ocr
+from app.routers import documents, images, media, archives, utils, pdf_tools, ocr, qr_barcode, pdf_advanced
 from app.config import UPLOAD_DIR, OUTPUT_DIR
 import os
 
@@ -25,6 +25,8 @@ app.include_router(archives.router, tags=["Archives"])
 app.include_router(utils.router, tags=["Utils"])
 app.include_router(pdf_tools.router, tags=["PDF Tools"])
 app.include_router(ocr.router, tags=["OCR"])
+app.include_router(qr_barcode.router, tags=["QR & Barcode"])
+app.include_router(pdf_advanced.router, tags=["PDF Advanced"])
 
 # Serve Frontend Static Files (Production)
 # We assume the frontend build is copied to 'static' directory in Docker

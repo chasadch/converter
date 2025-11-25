@@ -18,3 +18,8 @@ yt-dlp
 certifi
 requests
 pytesseract
+qrcode[pil]
+python-barcode[images]
+colorthief
+PyPDF2
+piexif
