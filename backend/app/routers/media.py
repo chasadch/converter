@@ -61,6 +61,13 @@ async def download_video(url: str = Form(...), format: str = Form("mp4")):
         'force_ipv4': True,
     }
 
+    # Pre-flight check: Verify internet connectivity
+    import requests
+    try:
+        requests.get("https://www.google.com", timeout=5)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"System Network Error: Container cannot reach the internet. DNS/Network failure. Details: {str(e)}")
+
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)

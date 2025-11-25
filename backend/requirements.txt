@@ -16,3 +16,4 @@ onnxruntime
 pypdf
 yt-dlp
 certifi
+requests
