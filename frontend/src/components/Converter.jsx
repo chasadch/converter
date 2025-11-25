@@ -30,6 +30,14 @@ const Converter = ({
         validateAndSetFiles(droppedFiles);
     };
 
+    const handleAddFiles = (e) => {
+        const newFiles = Array.from(e.target.files);
+        if (newFiles.length > 0) {
+            setFiles(prev => [...prev, ...newFiles]);
+            e.target.value = null; // Reset input
+        }
+    };
+
     const validateAndSetFiles = (selectedFiles) => {
         if (selectedFiles.length > 0) {
             if (!multiple) {
@@ -174,6 +182,24 @@ const Converter = ({
                                         : `${(files[0].size / 1024 / 1024).toFixed(2)} MB`
                                     }
                                 </p>
+                                {multiple && (
+                                    <div className="mt-1">
+                                        <button
+                                            onClick={() => document.getElementById('addFileInput').click()}
+                                            className="text-primary text-xs font-medium hover:underline flex items-center gap-1"
+                                        >
+                                            + Add more files
+                                        </button>
+                                        <input
+                                            type="file"
+                                            id="addFileInput"
+                                            className="hidden"
+                                            accept={acceptedFileTypes}
+                                            multiple={true}
+                                            onChange={handleAddFiles}
+                                        />
+                                    </div>
+                                )}
                             </div>
                             <button onClick={reset} className="p-2 hover:bg-white/10 rounded-full transition-colors">
                                 <AlertCircle size={20} className="text-text-muted hover:text-red-400" />
