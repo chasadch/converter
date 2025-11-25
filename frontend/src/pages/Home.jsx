@@ -7,8 +7,7 @@ const Home = () => {
         { title: 'Documents', icon: FileText, path: '/documents', desc: 'PDF, Word, Excel, Markdown' },
         { title: 'Images', icon: Image, path: '/images', desc: 'JPG, PNG, WebP, GIF' },
         { title: 'Bg Remover', icon: Wand2, path: '/bg-remover', desc: 'AI Background Removal' },
-        { title: 'Video Tools', icon: Youtube, path: '/video-tools', desc: 'Download & Compress' },
-        { title: 'Converter', icon: Video, path: '/media', desc: 'MP4, MP3, WAV, AVI' },
+        { title: 'Audio & Video', icon: Video, path: '/media', desc: 'Download, Compress, Convert' },
         { title: 'Archives', icon: Archive, path: '/archives', desc: 'Zip Extraction & Creation' },
         { title: 'Utilities', icon: Settings, path: '/utils', desc: 'Base64, JSON, YAML' },
     ];

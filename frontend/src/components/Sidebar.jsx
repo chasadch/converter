@@ -10,8 +10,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/pdf-tools', label: 'PDF Tools', icon: FileCheck },
         { path: '/images', label: 'Images', icon: Image },
         { path: '/bg-remover', label: 'Bg Remover', icon: Wand2 },
-        { path: '/video-tools', label: 'Video Tools', icon: Youtube },
-        { path: '/media', label: 'Converter', icon: Video },
+        { path: '/bg-remover', label: 'Bg Remover', icon: Wand2 },
+        { path: '/media', label: 'Audio & Video', icon: Video },
         { path: '/archives', label: 'Archives', icon: Archive },
         { path: '/utils', label: 'Utilities', icon: Settings },
     ];

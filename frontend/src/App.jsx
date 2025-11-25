@@ -10,7 +10,6 @@ import Archives from './pages/Archives';
 import Utils from './pages/Utils';
 import BackgroundRemover from './pages/BackgroundRemover';
 import PdfTools from './pages/PdfTools';
-import VideoTools from './pages/VideoTools';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -45,7 +44,6 @@ function App() {
               <Route path="/images" element={<Images />} />
               <Route path="/bg-remover" element={<BackgroundRemover />} />
               <Route path="/media" element={<Media />} />
-              <Route path="/video-tools" element={<VideoTools />} />
               <Route path="/archives" element={<Archives />} />
               <Route path="/utils" element={<Utils />} />
             </Routes>
