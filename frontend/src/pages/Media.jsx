@@ -5,13 +5,13 @@ import UrlConverter from '../components/UrlConverter';
 const Media = () => {
     return (
         <div className="p-8 max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8 gradient-text">Audio & Video Tools</h1>
+            <h1 className="text-4xl font-bold mb-8 gradient-text">Audio & Video Hub</h1>
 
             <div className="space-y-12">
                 {/* Section 1: Video Downloader */}
                 <section>
                     <UrlConverter
-                        title="Video Downloader"
+                        title="Download Video"
                         description="Download videos from YouTube, TikTok, Twitter, and more."
                         endpoint="/convert/media/download"
                         buttonLabel="Download Video"
@@ -25,7 +25,7 @@ const Media = () => {
                 {/* Section 2: Video Compressor */}
                 <section className="border-t border-border pt-12">
                     <Converter
-                        title="Video Compressor"
+                        title="Compress Video"
                         description="Reduce video file size while maintaining quality."
                         endpoint="/convert/media/compress"
                         acceptedFileTypes="video/*"
@@ -42,7 +42,7 @@ const Media = () => {
                 {/* Section 3: Format Converter */}
                 <section className="border-t border-border pt-12">
                     <Converter
-                        title="Format Converter"
+                        title="Convert Format"
                         description="Convert video and audio files to different formats."
                         endpoint="/convert/media"
                         acceptedFileTypes="video/*,audio/*"
