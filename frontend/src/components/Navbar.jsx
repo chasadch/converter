@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, FileText, Image, Video, Archive, Settings, Wand2, FileCheck, ChevronDown, ScanText, QrCode, Merge, Hash, Palette, Code, Edit } from 'lucide-react';
+import { Menu, X, FileText, Image, Video, Archive, Settings, Wand2, FileCheck, ChevronDown, ScanText, QrCode, Merge, Hash, Palette, Code, Edit, LogOut, User, LogIn } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
     const location = useLocation();
+    const { user, signOut } = useAuth();
+
+    const handleLogout = async () => {
+        await signOut();
+    };
 
     const tools = [
         { path: '/documents', label: 'Documents', icon: FileText },
@@ -84,6 +90,39 @@ const Navbar = () => {
                         </div>
 
                         <ThemeToggle />
+
+                        {user ? (
+                            <div className="flex items-center gap-4 border-l border-border pl-6">
+                                <div className="flex items-center gap-2 text-sm font-medium text-text">
+                                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                        <User size={16} className="text-primary" />
+                                    </div>
+                                    <span className="hidden lg:inline">{user.email}</span>
+                                </div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="p-2 text-text-muted hover:text-error hover:bg-error/10 rounded-lg transition-colors"
+                                    title="Sign Out"
+                                >
+                                    <LogOut size={20} />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-3 border-l border-border pl-6">
+                                <Link
+                                    to="/login"
+                                    className="text-sm font-medium text-text-muted hover:text-text transition-colors"
+                                >
+                                    Sign In
+                                </Link>
+                                <Link
+                                    to="/signup"
+                                    className="px-4 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-colors"
+                                >
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -129,6 +168,44 @@ const Navbar = () => {
                                 </Link>
                             );
                         })}
+
+                        <div className="border-t border-border mt-4 pt-4 px-4">
+                            {user ? (
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-2 text-sm font-medium text-text">
+                                        <User size={16} className="text-primary" />
+                                        <span className="truncate">{user.email}</span>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            handleLogout();
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                        className="flex items-center gap-2 text-sm font-medium text-error w-full"
+                                    >
+                                        <LogOut size={16} />
+                                        Sign Out
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-3">
+                                    <Link
+                                        to="/login"
+                                        className="flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-lg text-sm font-medium text-text hover:bg-surface-hover transition-colors"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        Sign In
+                                    </Link>
+                                    <Link
+                                        to="/signup"
+                                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-medium transition-colors"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
