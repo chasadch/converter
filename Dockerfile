@@ -7,7 +7,7 @@ COPY frontend/ .
 RUN npm run build
 
 # Stage 2: Setup Backend & Runtime
-FROM python:3.9-slim
+FROM python:3.9
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
