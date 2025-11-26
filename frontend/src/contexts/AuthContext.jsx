@@ -35,6 +35,12 @@ export const AuthProvider = ({ children }) => {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
+            options: {
+                data: {
+                    email: email,
+                    full_name: email.split('@')[0], // Use email username as default name
+                }
+            }
         });
         return { data, error };
     };
