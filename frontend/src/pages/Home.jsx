@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
+import ScrollRevealSection from '../components/animations/ScrollRevealSection';
+import CountUp from '../components/animations/CountUp';
+import MorphButton from '../components/animations/MorphButton';
 import {
     FileText, Image, Video, Archive, Settings, Wand2, FileCheck,
     ScanText, QrCode, Merge, Hash, Palette, Code, Edit,
     ArrowRight, Shield, Lock, Headphones, Smartphone,
-    Minimize2, ArrowRightLeft, Combine, PenLine, Pencil
+    Minimize2, ArrowRightLeft, Combine, PenLine, Pencil,
+    Zap, Users, Star
 } from 'lucide-react';
+
+// Lazy load Three.js component for performance
+const ParticleBackground = lazy(() => import('../components/animations/ParticleBackground'));
 
 const Home = () => {
     const popularTools = [
@@ -14,61 +22,50 @@ const Home = () => {
             icon: FileText,
             title: 'PDF to Word',
             desc: 'Convert PDFs to editable Word documents',
-            color: 'bg-blue-500',
+            color: 'bg-gradient-to-br from-blue-500 to-blue-600',
             path: '/documents'
         },
         {
             icon: Merge,
             title: 'Merge PDF',
             desc: 'Combine multiple PDFs into one unified document',
-            color: 'bg-purple-500',
+            color: 'bg-gradient-to-br from-purple-500 to-purple-600',
             path: '/pdf-advanced'
         },
         {
             icon: Image,
             title: 'JPG to PDF',
             desc: 'Transform JPG, PNG, BMP, GIF, and TIFF images to PDF',
-            color: 'bg-yellow-500',
+            color: 'bg-gradient-to-br from-yellow-500 to-orange-500',
             path: '/images'
         },
         {
             icon: PenLine,
             title: 'Sign PDF',
             desc: 'Create an electronic signature and sign your documents',
-            color: 'bg-green-500',
+            color: 'bg-gradient-to-br from-green-500 to-emerald-600',
             path: '/pdf-editor'
         },
         {
             icon: Edit,
             title: 'Edit PDF',
             desc: 'Add text, shapes, images and freehand annotations to your PDF',
-            color: 'bg-pink-500',
+            color: 'bg-gradient-to-br from-pink-500 to-rose-600',
             path: '/pdf-editor'
         },
         {
             icon: Minimize2,
             title: 'Compress PDF',
             desc: 'Reduce the size of your PDF without losing quality',
-            color: 'bg-red-500',
+            color: 'bg-gradient-to-br from-red-500 to-pink-600',
             path: '/pdf-tools'
         },
     ];
 
-    const allTools = [
-        { icon: FileText, title: 'PDF to Word', path: '/documents' },
-        { icon: Merge, title: 'Merge PDF', path: '/pdf-advanced' },
-        { icon: FileCheck, title: 'Compress PDF', path: '/pdf-tools' },
-        { icon: Edit, title: 'PDF Editor', path: '/pdf-editor' },
-        { icon: Image, title: 'Image Converter', path: '/images' },
-        { icon: Wand2, title: 'Background Remover', path: '/bg-remover' },
-        { icon: ScanText, title: 'OCR', path: '/ocr' },
-        { icon: Palette, title: 'Image Toolkit', path: '/image-toolkit' },
-        { icon: QrCode, title: 'QR & Barcode', path: '/qr-generator' },
-        { icon: Hash, title: 'Hash Generator', path: '/hash-generator' },
-        { icon: Code, title: 'Developer Tools', path: '/dev-tools' },
-        { icon: Video, title: 'Video Converter', path: '/media' },
-        { icon: Archive, title: 'Archive Creator', path: '/archives' },
-        { icon: Settings, title: 'Utilities', path: '/utils' },
+    const stats = [
+        { icon: Users, value: 15420, label: 'Active Users', suffix: '+' },
+        { icon: Zap, value: 50000, label: 'Files Converted', suffix: '+' },
+        { icon: Star, value: 4.8, label: 'User Rating', decimals: 1 },
     ];
 
     // Structured Data for SEO
@@ -91,21 +88,45 @@ const Home = () => {
             "ratingCount": "15420",
             "bestRating": "5",
             "worstRating": "1"
-        },
-        "features": [
-            "Convert PDF to Word",
-            "Merge PDF files",
-            "Compress PDF",
-            "PDF to JPG conversion",
-            "Edit PDF online",
-            "OCR text extraction",
-            "Image conversion",
-            "QR code generator"
-        ]
+        }
+    };
+
+    // Animation variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5, ease: 'easeOut' }
+        }
+    };
+
+    const cardHoverVariants = {
+        rest: { scale: 1, rotateY: 0 },
+        hover: {
+            scale: 1.05,
+            rotateY: 5,
+            transition: {
+                type: 'spring',
+                stiffness: 300,
+                damping: 20
+            }
+        }
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white overflow-hidden">
             <SEO
                 title="Free PDF Converter - Convert, Merge, Compress PDF Online"
                 description="Free online PDF converter with 30+ tools. Convert PDF to Word, Excel, JPG. Merge, compress, edit PDFs. Fast, secure, no signup required. Try now!"
@@ -113,269 +134,300 @@ const Home = () => {
                 url="https://asad1254-whats.hf.space/"
                 structuredData={structuredData}
             />
+
+            {/* Three.js Particle Background */}
+            <Suspense fallback={null}>
+                <ParticleBackground />
+            </Suspense>
+
             {/* Hero Section */}
-            <section className="relative pt-20 pb-24 overflow-hidden bg-gray-50">
-                <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-                    <div className="max-w-3xl mx-auto space-y-6">
-                        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
-                            We make PDF easy.
-                        </h1>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <section className="relative pt-32 pb-24 px-6 bg-gradient-to-b from-gray-50 via-white to-white">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                    <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-3xl animate-pulse"></div>
+                    <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-red-100/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                </div>
+
+                <div className="max-w-6xl mx-auto relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className="text-center space-y-8"
+                    >
+                        {/* Main Heading with gradient */}
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="text-6xl md:text-7xl font-bold leading-tight"
+                        >
+                            <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+                                We make PDF
+                            </span>
+                            <br />
+                            <span className="bg-gradient-to-r from-primary via-red-500 to-primary bg-clip-text text-transparent animate-gradient">
+                                easy.
+                            </span>
+                        </motion.h1>
+
+                        {/* Description */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+                        >
                             All the tools you'll need to be more productive and work smarter with documents.
-                        </p>
+                        </motion.p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                            <Link
-                                to="/documents"
-                                className="h-14 px-8 text-lg bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all shadow-lg inline-flex items-center justify-center"
-                            >
-                                Start Free Trial
+                        {/* CTA Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.6 }}
+                            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+                        >
+                            <Link to="/documents">
+                                <MorphButton className="h-16 px-10 text-lg bg-gradient-to-r from-primary to-red-500 hover:from-red-500 hover:to-primary text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all">
+                                    <span className="flex items-center gap-2">
+                                        Start Free Trial
+                                        <ArrowRight size={20} />
+                                    </span>
+                                </MorphButton>
                             </Link>
-                            <Link
-                                to="/pdf-tools"
-                                className="h-14 px-8 text-lg border-2 border-gray-300 hover:bg-white hover:text-primary text-gray-700 font-semibold rounded-lg transition-all inline-flex items-center justify-center"
-                            >
-                                Explore All PDF Tools
-                            </Link>
-                        </div>
-                    </div>
 
-                    {/* Decorative Background */}
-                    <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-                        <div className="absolute top-[-10%] left-[-5%] w-[30%] h-[30%] bg-blue-100/50 rounded-full blur-3xl"></div>
-                        <div className="absolute bottom-[-10%] right-[-5%] w-[30%] h-[30%] bg-red-100/50 rounded-full blur-3xl"></div>
-                    </div>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link to="/pdf-tools" className="h-16 px-10 text-lg border-2 border-gray-300 hover:border-primary text-gray-700 hover:text-primary font-semibold rounded-xl transition-all inline-flex items-center justify-center">
+                                    Explore All Tools
+                                </Link>
+                            </motion.div>
+                        </motion.div>
+
+                        {/* Stats */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.8 }}
+                            className="flex flex-wrap justify-center gap-12 pt-12"
+                        >
+                            {stats.map((stat, index) => (
+                                <motion.div
+                                    key={index}
+                                    whileHover={{ scale: 1.1, rotate: 2 }}
+                                    className="flex items-center gap-3"
+                                >
+                                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                        <stat.icon className="text-primary" size={24} />
+                                    </div>
+                                    <div>
+                                        <div className="text-3xl font-bold text-gray-900">
+                                            <CountUp end={stat.value} suffix={stat.suffix || ''} />
+                                        </div>
+                                        <div className="text-sm text-gray-600">{stat.label}</div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Popular Tools Grid */}
-            <section className="py-20 bg-white">
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="text-center mb-12 space-y-3">
-                        <h2 className="text-3xl font-bold text-gray-900">Most Popular PDF Tools</h2>
-                        <p className="text-gray-600 text-lg">
-                            30 tools to convert, compress, and edit PDFs for free. Try it out today!
-                        </p>
-                    </div>
+            <ScrollRevealSection direction="up">
+                <section className="py-20 bg-white px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="text-center mb-16"
+                        >
+                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                                Most Popular PDF Tools
+                            </h2>
+                            <p className="text-xl text-gray-600">
+                                30 tools to convert, compress, and edit PDFs for free. Try it out today!
+                            </p>
+                        </motion.div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {popularTools.map((tool, index) => {
-                            const Icon = tool.icon;
-                            return (
-                                <Link
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                        >
+                            {popularTools.map((tool, index) => {
+                                const Icon = tool.icon;
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        variants={itemVariants}
+                                        initial="rest"
+                                        whileHover="hover"
+                                        className="perspective-1000"
+                                    >
+                                        <Link to={tool.path}>
+                                            <motion.div
+                                                variants={cardHoverVariants}
+                                                className="h-full bg-white border border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all group cursor-pointer"
+                                            >
+                                                <motion.div
+                                                    whileHover={{ rotate: 360, scale: 1.1 }}
+                                                    transition={{ duration: 0.6 }}
+                                                    className={`w-16 h-16 ${tool.color} rounded-2xl flex items-center justify-center mb-6 shadow-xl`}
+                                                >
+                                                    <Icon className="text-white" size={32} />
+                                                </motion.div>
+                                                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                                                    {tool.title}
+                                                </h3>
+                                                <p className="text-gray-600 leading-relaxed">
+                                                    {tool.desc}
+                                                </p>
+                                            </motion.div>
+                                        </Link>
+                                    </motion.div>
+                                );
+                            })}
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="mt-16 text-center"
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="inline-flex items-center gap-2 px-10 py-4 font-semibold text-primary bg-blue-50 hover:bg-blue-100 rounded-xl transition-all shadow-md hover:shadow-lg"
+                            >
+                                See All PDF Tools
+                                <ArrowRightLeft size={20} />
+                            </motion.button>
+                        </motion.div>
+                    </div>
+                </section>
+            </ScrollRevealSection>
+
+            {/* Features - with Unsplash Images */}
+            <ScrollRevealSection direction="left">
+                <section className="py-20 bg-gray-50 px-6">
+                    <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                            className="space-y-6"
+                        >
+                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+                                Keep Your Simple Tasks Simple
+                            </h2>
+                            <p className="text-lg text-gray-600 leading-relaxed">
+                                FileConverter is the first and only PDF software you'll love. We have all the tools you'll need to start, manage, and finish your work with digital documents.
+                            </p>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                            whileHover={{ scale: 1.05, rotateY: 5 }}
+                            className="relative group"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+                                alt="Dashboard Analytics"
+                                className="w-full h-96 object-cover rounded-3xl shadow-2xl group-hover:shadow-3xl transition-all"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl"></div>
+                        </motion.div>
+                    </div>
+                </section>
+            </ScrollRevealSection>
+
+            {/* Security Section - Dark with animations */}
+            <ScrollRevealSection direction="up">
+                <section className="py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white px-6">
+                    <div className="max-w-6xl mx-auto">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-4xl font-bold text-center mb-20"
+                        >
+                            Why Choose FileConverter?
+                        </motion.h2>
+
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="grid md:grid-cols-3 gap-10"
+                        >
+                            {[
+                                {
+                                    icon: Shield,
+                                    title: 'Security Standards',
+                                    desc: 'ISO/IEC 27001 certified and GDPR, CCPA compliant.',
+                                    color: 'from-blue-500 to-cyan-500'
+                                },
+                                {
+                                    icon: Lock,
+                                    title: '256-Bit Encryption',
+                                    desc: 'Military-grade TLS encryption for secure transfers.',
+                                    color: 'from-green-500 to-emerald-500'
+                                },
+                                {
+                                    icon: Headphones,
+                                    title: '24/7 Support',
+                                    desc: 'Round-the-clock customer support whenever you need.',
+                                    color: 'from-purple-500 to-pink-500'
+                                }
+                            ].map((feature, index) => (
+                                <motion.div
                                     key={index}
-                                    to={tool.path}
-                                    className="h-full p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border-none shadow-sm bg-gray-50 hover:bg-white group rounded-lg"
+                                    variants={itemVariants}
+                                    whileHover={{ y: -10, scale: 1.05 }}
+                                    className="text-center p-10 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all group"
                                 >
-                                    <div className="flex items-start gap-4">
-                                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${tool.color} text-white shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                                            <Icon className="w-6 h-6" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <h3 className="font-bold text-lg text-gray-900">{tool.title}</h3>
-                                            <p className="text-gray-600 leading-relaxed text-sm">
-                                                {tool.desc}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            );
-                        })}
+                                    <motion.div
+                                        animate={{ rotate: [0, 360] }}
+                                        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                                        className={`mx-auto w-20 h-20 bg-gradient-to-br ${feature.color} rounded-full flex items-center justify-center mb-6 shadow-2xl`}
+                                    >
+                                        <feature.icon size={40} />
+                                    </motion.div>
+                                    <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-300 leading-relaxed">
+                                        {feature.desc}
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
                     </div>
-
-                    <div className="mt-12 text-center">
-                        <button className="inline-flex items-center justify-center px-8 py-4 font-medium text-primary bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
-                            See All PDF Tools
-                            <ArrowRightLeft className="ml-2 w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            {/* Feature 1 - Simple Tasks */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6 order-2 lg:order-1">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Keep Your Simple Tasks Simple
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            FileConverter is the first and only PDF software you'll love. We have all the tools you'll need to start, manage, and finish your work with digital documents.
-                        </p>
-                    </div>
-                    <div className="order-1 lg:order-2 flex justify-center">
-                        <div className="w-full max-w-md h-80 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center">
-                            <FileText size={120} className="text-gray-400" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Feature 2 - Work Directly */}
-            <section className="py-20 bg-white">
-                <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-md h-80 bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center">
-                            <Edit size={120} className="text-gray-400" />
-                        </div>
-                    </div>
-                    <div className="space-y-6">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Work Directly on Your Files
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            Do more than just view PDFs. Highlight and add text, images, shapes, and freehand annotations to your documents. You can connect to 30 other tools to enhance your files further.
-                        </p>
-                        <Link
-                            to="/pdf-editor"
-                            className="inline-flex items-center h-12 px-8 text-lg bg-primary text-white hover:bg-primary-hover font-semibold rounded-lg transition-all shadow-md"
-                        >
-                            Edit a PDF now
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Feature 3 - Digital Signatures */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6 order-2 lg:order-1">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Digital Signatures Made Easy
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            Fill in forms, e-sign contracts, and close deals in a few simple steps. You can also request e-signatures and track your document every step of the way.
-                        </p>
-                        <Link
-                            to="/pdf-editor"
-                            className="inline-flex items-center h-12 px-8 text-lg bg-primary text-white hover:bg-primary-hover font-semibold rounded-lg transition-all shadow-md"
-                        >
-                            Try eSign
-                        </Link>
-                    </div>
-                    <div className="order-1 lg:order-2 flex justify-center">
-                        <div className="w-full max-w-md h-80 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center">
-                            <PenLine size={120} className="text-gray-400" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Feature 4 - Manage Documents */}
-            <section className="py-20 bg-white">
-                <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-md h-80 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center">
-                            <Archive size={120} className="text-gray-400" />
-                        </div>
-                    </div>
-                    <div className="space-y-6">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Manage Documents—All in One Place
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            No more working across multiple apps! Save time by storing, managing, and sharing files across devices—straight from our web platform.
-                        </p>
-                        <Link
-                            to="/documents"
-                            className="inline-flex items-center h-12 px-8 text-lg bg-primary text-white hover:bg-primary-hover font-semibold rounded-lg transition-all shadow-md"
-                        >
-                            Start Free Trial
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Mobile App Section */}
-            <section className="py-24 bg-gray-50">
-                <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm">
-                            <Smartphone className="w-4 h-4" />
-                            <span>Mobile App</span>
-                        </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Get It on Mobile
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed">
-                            Create PDF scans, organize documents, and share files from all your connected devices with the FileConverter Mobile App—wherever you are.
-                        </p>
-                        <div className="flex flex-wrap gap-4 pt-4">
-                            <button className="bg-gray-900 text-white hover:bg-gray-800 h-12 px-6 rounded-lg flex items-center gap-2 font-medium transition-all">
-                                App Store
-                            </button>
-                            <button className="bg-gray-900 text-white hover:bg-gray-800 h-12 px-6 rounded-lg flex items-center gap-2 font-medium transition-all">
-                                Google Play
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="relative h-[400px] flex items-center justify-center">
-                        <div className="w-[280px] h-[500px] bg-gray-900 rounded-[3rem] p-4 shadow-2xl rotate-[-6deg] transform hover:rotate-0 transition-transform duration-500">
-                            <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative border-4 border-gray-800">
-                                <div className="absolute top-0 w-full h-6 bg-gray-100 flex justify-center items-center gap-2">
-                                    <div className="w-16 h-4 bg-black rounded-b-xl"></div>
-                                </div>
-                                <div className="p-6 mt-8 space-y-4">
-                                    <div className="w-12 h-12 bg-red-500 rounded-xl mb-8"></div>
-                                    <div className="h-4 bg-gray-100 rounded w-3/4"></div>
-                                    <div className="h-4 bg-gray-100 rounded w-1/2"></div>
-                                    <div className="grid grid-cols-2 gap-2 mt-8">
-                                        <div className="aspect-square bg-blue-50 rounded-lg"></div>
-                                        <div className="aspect-square bg-purple-50 rounded-lg"></div>
-                                        <div className="aspect-square bg-yellow-50 rounded-lg"></div>
-                                        <div className="aspect-square bg-green-50 rounded-lg"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Trust / Security Section */}
-            <section className="py-20 bg-gray-900 text-white">
-                <div className="max-w-6xl mx-auto px-6">
-                    <h2 className="text-3xl font-bold text-center mb-16">Why Choose FileConverter?</h2>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="space-y-4 text-center p-8 rounded-2xl bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
-                            <div className="mx-auto w-16 h-16 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mb-6">
-                                <Shield className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-xl font-bold">Security Standards</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Your safety is our priority. FileConverter is ISO/IEC 27001 certified and GDPR, CCPA, and nFADP compliant.
-                            </p>
-                        </div>
-
-                        <div className="space-y-4 text-center p-8 rounded-2xl bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
-                            <div className="mx-auto w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mb-6">
-                                <Lock className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-xl font-bold">256-Bit TLS Encryption</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                We use 256-bit TLS encryption for secure information transfer.
-                            </p>
-                        </div>
-
-                        <div className="space-y-4 text-center p-8 rounded-2xl bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
-                            <div className="mx-auto w-16 h-16 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mb-6">
-                                <Headphones className="w-8 h-8" />
-                            </div>
-                            <h3 className="text-xl font-bold">24/7 Customer Support</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Get all the help you need with our round-the-clock customer support.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </ScrollRevealSection>
 
             {/* Footer */}
             <footer className="py-12 px-6 bg-gray-900 border-t border-gray-800">
-                <div className="max-w-6xl mx-auto text-center text-gray-400">
-                    <p>© 2024 FileConverter. All rights reserved.</p>
+                <div className="max-w-6xl mx-auto text-center">
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="text-gray-400"
+                    >
+                        © 2024 FileConverter. All rights reserved.
+                    </motion.p>
                 </div>
             </footer>
         </div>
