@@ -47,9 +47,12 @@ COPY --from=frontend-build /app/frontend/dist /app/static
 # Create uploads and outputs directories
 RUN mkdir -p uploads outputs
 
-# Expose the port the app runs on (Hugging Face Spaces uses 7860 by default)
+# Expose port for Railway (uses $PORT) and Hugging Face (7860)
 EXPOSE 7860
+EXPOSE 8000
 
 # Command to run the application
-# Note: Hugging Face expects the app to listen on port 7860
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Railway: Uses $PORT environment variable
+# Hugging Face: Uses 7860
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-7860}
+

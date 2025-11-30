@@ -17,6 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Health check endpoint for Railway/monitoring
+@app.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "All-in-One File Converter",
+        "version": "1.0.0"
+    }
+
+
 # Include routers
 app.include_router(documents.router, tags=["Documents"])
 app.include_router(images.router, tags=["Images"])

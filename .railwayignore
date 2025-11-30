@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+.venv/
+venv/
+env/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts (keep dist for production)
+# frontend/dist/  (commented - we need this)
+
+# Temporary files
+*.log
+*.tmp
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
