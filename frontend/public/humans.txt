@@ -1,0 +1,18 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+    Developer: FileConverter Team
+    Site: https://asad1254-whats.hf.space
+    Twitter: @fileconverter
+    Location: Global
+
+# THANKS
+    To all our users and supporters
+
+# TECHNOLOGY COLOPHON
+    Backend: FastAPI (Python)
+    Frontend: React + Vite
+    Hosting: Hugging Face Spaces
+    Authentication: Supabase
+    Design: Smallpdf-inspired UI

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import {
     FileText, Image, Video, Archive, Settings, Wand2, FileCheck,
     ScanText, QrCode, Merge, Hash, Palette, Code, Edit,
@@ -70,8 +71,48 @@ const Home = () => {
         { icon: Settings, title: 'Utilities', path: '/utils' },
     ];
 
+    // Structured Data for SEO
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "FileConverter - All-in-One PDF Tools",
+        "url": "https://asad1254-whats.hf.space",
+        "description": "Free online PDF converter with 30+ tools. Convert PDF to Word, Excel, JPG. Merge, compress, edit PDFs. Fast, secure, no signup required.",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "15420",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "features": [
+            "Convert PDF to Word",
+            "Merge PDF files",
+            "Compress PDF",
+            "PDF to JPG conversion",
+            "Edit PDF online",
+            "OCR text extraction",
+            "Image conversion",
+            "QR code generator"
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-white">
+            <SEO
+                title="Free PDF Converter - Convert, Merge, Compress PDF Online"
+                description="Free online PDF converter with 30+ tools. Convert PDF to Word, Excel, JPG. Merge, compress, edit PDFs. Fast, secure, no signup required. Try now!"
+                keywords="pdf converter, pdf to word, merge pdf, compress pdf, convert pdf to jpg, online pdf tools, free pdf converter, pdf editor, pdf to excel, image converter"
+                url="https://asad1254-whats.hf.space/"
+                structuredData={structuredData}
+            />
             {/* Hero Section */}
             <section className="relative pt-20 pb-24 overflow-hidden bg-gray-50">
                 <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">

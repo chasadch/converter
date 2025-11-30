@@ -1,0 +1,15 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://asad1254-whats.hf.space/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Disallow specific paths (if any)
+Disallow: /api/
+Disallow: /convert/
+Disallow: /uploads/
+Disallow: /outputs/
